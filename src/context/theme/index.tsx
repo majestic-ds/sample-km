@@ -1,6 +1,5 @@
 // ThemeContext.js
-import React, {createContext, useState, useContext, ReactNode} from 'react';
-import {Colors} from './colors';
+import React, {createContext, useContext, ReactNode} from 'react';
 
 interface ContextProps {}
 
@@ -11,15 +10,5 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({children}: {children: ReactNode}) => {
-  const [theme, setTheme] = useState('light');
-
-  const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
-  };
-
-  return (
-    <ThemeContext.Provider value={{theme, toggleTheme}}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={{}}>{children}</ThemeContext.Provider>;
 };
