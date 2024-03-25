@@ -6,22 +6,8 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import {Colors} from '../../context/theme/colors';
-
-function HomeScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
+import HomeStack from '../stack-navigation/HomeStack';
+import SettingsStack from '../stack-navigation/SettingsStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -96,7 +82,7 @@ export default function TabbedNavigation() {
         }}>
         <Tab.Screen
           name="Home"
-          component={HomeScreen}
+          component={HomeStack}
           options={() =>
             TabBarOption({
               icon: require('../../../assets/images/icons/home.png'),
@@ -105,7 +91,7 @@ export default function TabbedNavigation() {
         />
         <Tab.Screen
           name="Inbound"
-          component={SettingsScreen}
+          component={SettingsStack}
           options={() =>
             TabBarOption({
               icon: require('../../../assets/images/icons/up-arrow.png'),
@@ -114,7 +100,7 @@ export default function TabbedNavigation() {
         />
         <Tab.Screen
           name="Outbound"
-          component={SettingsScreen}
+          component={SettingsStack}
           options={() =>
             TabBarOption({
               icon: require('../../../assets/images/icons/down-arrow.png'),
@@ -123,7 +109,7 @@ export default function TabbedNavigation() {
         />
         <Tab.Screen
           name="Settings"
-          component={SettingsScreen}
+          component={SettingsStack}
           options={() =>
             TabBarOption({
               icon: require('../../../assets/images/icons/user.png'),

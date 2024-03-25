@@ -1,15 +1,14 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import TabbedNavigation from './src/navigation/tabbed-navigation';
+
+import {AuthProvider} from './src/context/auth';
+import AppRoot from './src/App';
 
 function App(): React.JSX.Element {
-  return <TabbedNavigation />;
+  return (
+    <AuthProvider>
+      <AppRoot />
+    </AuthProvider>
+  );
 }
 
 export default App;
