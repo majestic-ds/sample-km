@@ -66,7 +66,9 @@ CREATE TABLE "users"(
     "email" VARCHAR(255) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "account_status" VARCHAR(255) NOT NULL,
-    "user_role" VARCHAR(255) NOT NULL
+    "user_role" VARCHAR(255) NOT NULL,
+    "profile_picture" VARCHAR(255) NOT NULL
+
 );
 ALTER TABLE
     "users" ADD PRIMARY KEY("id");

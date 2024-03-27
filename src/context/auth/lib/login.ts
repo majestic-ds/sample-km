@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {UserType} from '../../../types/user';
 import {Users} from '../../../fake-data/users';
 import {LocalStorageNames} from '../../../configs/enums';
+import { useAuth } from '..';
 
 export interface Props {
   username: string;
@@ -11,6 +12,7 @@ export async function login({
   password,
   username,
 }: Props): Promise<UserType | null> {
+
   const credentials = Users.find(
     data => data.username === username && data.password === password,
   );

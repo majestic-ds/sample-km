@@ -19,6 +19,7 @@ const userSchema = z.object({
     'manager',
     'investigator',
   ]),
+  profile_picture: z.string().url().optional(),
 });
 
 export default userSchema;
