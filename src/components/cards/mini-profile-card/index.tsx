@@ -45,7 +45,12 @@ export default function MiniProfileCard() {
           style={{color: Colors.WHITE, textAlign: 'right', fontWeight: 'bold'}}>
           EMP: {user?.id}{' '}
         </Text>
-        <View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+          }}>
           <Pressable
             onPress={() => {
               auth?.logout();
@@ -56,6 +61,7 @@ export default function MiniProfileCard() {
               marginTop: 10,
               borderRadius: 5,
               padding: 5,
+              width: '50%',
             }}>
             <Text
               style={{
