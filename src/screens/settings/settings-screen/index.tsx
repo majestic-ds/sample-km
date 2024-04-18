@@ -8,14 +8,18 @@ import MainLayout from '../../../components/layout/main-layout';
 
 export default function SettingsScreen() {
   const auth = useAuth();
+
   return (
     <MainLayout>
+      <View style={{margin: 16}}>
+        {auth?.user && <UserInfoCard user={auth?.user} />}
+      </View>
+
       <View style={{flex: 1, margin: 16}}>
-        {auth?.user && <UserInfoCard user={auth.user} />}
         <Button
           onPress={() => {
             auth?.logout();
-            auth?.taskComplete(val => val + 1);
+            auth?.taskComplete();
           }}
           backgroundColor={Colors.RED}
           label="LOGOUT"

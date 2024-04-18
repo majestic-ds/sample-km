@@ -8,6 +8,8 @@ import {
 import {Colors} from '../../context/theme/colors';
 import HomeStack from '../stack-navigation/HomeStack';
 import SettingsStack from '../stack-navigation/SettingsStack';
+import InBoundStack from '../stack-navigation/InBoundStack';
+import OutBoundStack from '../stack-navigation/OutBoundStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -91,7 +93,7 @@ export default function TabbedNavigation() {
         />
         <Tab.Screen
           name="Inbound"
-          component={SettingsStack}
+          component={InBoundStack}
           options={() =>
             TabBarOption({
               icon: require('../../../assets/images/icons/up-arrow.png'),
@@ -100,7 +102,7 @@ export default function TabbedNavigation() {
         />
         <Tab.Screen
           name="Outbound"
-          component={SettingsStack}
+          component={OutBoundStack}
           options={() =>
             TabBarOption({
               icon: require('../../../assets/images/icons/down-arrow.png'),
