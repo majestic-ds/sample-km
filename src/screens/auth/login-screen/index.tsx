@@ -1,10 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-} from 'react-native';
+import {View, Text, Image, Dimensions} from 'react-native';
 import {Colors} from '../../../context/theme/colors';
 import Input from '../../../components/inputs/input';
 import Button from '../../../components/buttons/button';
@@ -21,7 +16,7 @@ export default function LoginScreen() {
       username,
       password,
     });
-    auth?.taskComplete((val)=> val + 1 );
+    auth?.taskComplete();
 
     // Implement your login logic here
     console.log('Username:', username);

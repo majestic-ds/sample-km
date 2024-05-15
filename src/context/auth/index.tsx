@@ -42,7 +42,9 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
         loginState: isLoggedIn,
         login,
         logout,
-        taskComplete: () => setRefresh(r => r + 1),
+        taskComplete: () => {
+          setRefresh(r => r + 1);
+        },
         user,
       }}>
       {children}
