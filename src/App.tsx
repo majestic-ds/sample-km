@@ -1,17 +1,13 @@
 import React from 'react';
-import TabbedNavigation from '../src/navigation/tabbed-navigation';
-import {useAuth} from './context/auth';
-import LoginScreen from './screens/auth/login-screen';
-import { View} from 'react-native';
 
+import {Text, View} from 'react-native';
 
-function AppRoot(): React.JSX.Element {
-  const auth = useAuth();
+function App(): React.JSX.Element {
   return (
-    <View style={{flex: 1}}>
-      {auth?.loginState ? <TabbedNavigation /> : <LoginScreen />}
+    <View>
+      <Text>ok</Text>
     </View>
   );
 }
 
-export default AppRoot;
+export default App;
