@@ -23,9 +23,9 @@ export const WorkSchema = z.object({
     'critical priority',
   ]),
   acknowledged: z.enum(['yes', 'no']),
-  keywords: z.array(z.string()),
-  description: z.string(),
+  keywords: z.array(z.string()).min(1, 'add atleast one keyword'),
+  description: z.string().min(1, 'please add a description'),
   key_words: z.array(z.string()),
-  work_title: z.string(),
+  work_title: z.string().min(1, 'please add a title'),
   is_reassignment: z.string(),
 });

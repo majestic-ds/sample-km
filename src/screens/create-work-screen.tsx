@@ -30,6 +30,7 @@ import {useAuth} from '../context/AuthContext';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import {generateDocumentId} from '../utils/generate-document-id';
+import FilePicker from '../components/file-picker';
 
 export default function CreateWorkScreen() {
   const auth = useAuth();
@@ -44,7 +45,7 @@ export default function CreateWorkScreen() {
           initialValues={{
             work_title: '',
             handler_id: `${auth.authState?.user?.id || ''}`,
-            document_id: documentId,
+            document_id: '',
             date: date,
             sensitivity: '',
             priority: '',
@@ -91,14 +92,6 @@ export default function CreateWorkScreen() {
                 </Text>
               )}
 
-              <Input isDisabled>
-                <InputField
-                  type="text"
-                  defaultValue={values.document_id}
-                  placeholder="Document ID"
-                  onChangeText={handleChange('document_id')}
-                />
-              </Input>
               {touched.document_id && errors.document_id && (
                 <Text fontSize={'$sm'} color="$rose500">
                   {errors.handler_id ?? 'bo'}
@@ -153,7 +146,7 @@ export default function CreateWorkScreen() {
 
               {touched.sensitivity && errors.sensitivity && (
                 <Text fontSize={'$sm'} color="$rose500">
-                  {errors.handler_id ?? 'bo'}
+                  {errors.handler_id ?? 'please select sensitivity'}
                 </Text>
               )}
 
@@ -194,7 +187,7 @@ export default function CreateWorkScreen() {
 
               {touched.priority && errors.priority && (
                 <Text fontSize={'$sm'} color="$rose500">
-                  {errors.handler_id ?? 'bo'}
+                  {errors.handler_id ?? 'please select priority'}
                 </Text>
               )}
 
@@ -219,6 +212,23 @@ export default function CreateWorkScreen() {
                   onChangeText={handleChange('description')}
                 />
               </Textarea>
+              {touched.description && errors.description && (
+                <Text fontSize={'$sm'} color="$rose500">
+                  {errors.description ?? 'please enter description'}
+                </Text>
+              )}
+
+              <FilePicker onFileSelect={handleChange('document_id')} />
+              {values.document_id && (
+                <Input isDisabled>
+                  <InputField
+                    type="text"
+                    defaultValue={values.document_id}
+                    placeholder="Document ID"
+                    onChangeText={handleChange('document_id')}
+                  />
+                </Input>
+              )}
 
               <Button
                 onPressIn={(event: GestureResponderEvent) =>
