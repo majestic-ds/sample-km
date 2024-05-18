@@ -8,19 +8,25 @@ import SettingsScreen from '../../screens/settings-screen';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CreateWorkScreen from '../../screens/create-work-screen';
+import {Dimensions} from 'react-native';
+import {View} from '@gluestack-ui/themed';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const Tab = createBottomTabNavigator();
 
 const IconStyle = ({
   focused,
   iconName,
+  size,
 }: {
   focused: boolean;
   iconName?: string;
+  size: number;
 }) => (
   <Icon
     name={iconName!}
-    size={30}
+    size={size}
     color={!focused ? '#ffffff' : '#246EE9'}
     style={{
       backgroundColor: focused ? '#ffffff' : '#246EE9',
@@ -30,16 +36,16 @@ const IconStyle = ({
   />
 );
 
-const WorksIcon = ({focused}: {focused: boolean}) => (
-  <IconStyle focused={focused} iconName="briefcase" />
+const WorksIcon = ({focused, size}: {focused: boolean; size: number}) => (
+  <IconStyle focused={focused} iconName="briefcase" size={size} />
 );
 
-const SettingsIcon = ({focused}: {focused: boolean}) => (
-  <IconStyle focused={focused} iconName="user-cog" />
+const SettingsIcon = ({focused, size}: {focused: boolean; size: number}) => (
+  <IconStyle focused={focused} iconName="cog" size={size} />
 );
 
-const CreateWorkIcon = ({focused}: {focused: boolean}) => (
-  <IconStyle focused={focused} iconName="folder-plus" />
+const CreateWorkIcon = ({focused, size}: {focused: boolean; size: number}) => (
+  <IconStyle focused={focused} iconName="folder-plus" size={size} />
 );
 
 export default function TabbedNavigation() {
@@ -55,6 +61,10 @@ export default function TabbedNavigation() {
         screenOptions={{
           tabBarStyle: {
             backgroundColor: '#246EE9',
+          },
+          tabBarIconStyle: {
+            width: '100%',
+            height: '100%',
           },
         }}>
         <Tab.Screen
