@@ -1,5 +1,5 @@
 import {View, ScrollView, GestureResponderEvent} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Box,
   Button,
@@ -21,30 +21,64 @@ import {
   SelectItem,
   SelectPortal,
   SelectTrigger,
+  Toast,
+  ToastDescription,
+  ToastTitle,
+  VStack,
 } from '@gluestack-ui/themed';
 
-import {Formik, ErrorMessage} from 'formik';
+import {Formik} from 'formik';
 import {WorkSchema} from '../validators/work';
 import {toFormikValidationSchema} from 'zod-formik-adapter';
 import {useAuth} from '../context/AuthContext';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
-import {generateDocumentId} from '../utils/generate-document-id';
 import FilePicker from '../components/file-picker';
+import {DepartmentType} from '../types/department';
+import {getAllDepartment} from '../utils/data/department';
+import {UserType} from '../types/user';
+import {getUser} from '../utils/data/user';
+import {createWork} from '../utils/data/work';
+import {useToast} from '@gluestack-ui/themed';
 
 export default function CreateWorkScreen() {
   const auth = useAuth();
-  const [date, setDate] = useState(new Date());
+  const toast = useToast();
+  const [date, setDate] = useState(moment().toDate());
   const [open, setOpen] = useState(false);
-  const documentId = generateDocumentId();
+  const [departments, setDepartments] = useState<DepartmentType[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(
+    null,
+  );
+  const [users, setUsers] = useState<UserType[]>([]);
+
+  useEffect(() => {
+    getAllDepartment().then(data => setDepartments(() => data));
+
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (selectedDepartment !== null) {
+      getUser(`?department_id=${selectedDepartment}`).then(data =>
+        setUsers(() => data),
+      );
+    }
+
+    return () => {};
+  }, [selectedDepartment]);
 
   return (
     <View style={{flex: 1}}>
       <ScrollView>
         <Formik
           initialValues={{
+            from_department: auth.authState?.user?.department_id!,
             work_title: '',
-            handler_id: `${auth.authState?.user?.id || ''}`,
+            work_creator: `${auth.authState?.user?.id || ''}`,
+            handler_id: '',
+            handler_dept: '',
+
             document_id: '',
             date: date,
             sensitivity: '',
@@ -52,12 +86,39 @@ export default function CreateWorkScreen() {
             acknowledged: 'no',
             keywords: [],
             description: '',
+            is_reassignment: 'no',
           }}
           validationSchema={toFormikValidationSchema(WorkSchema)}
-          onSubmit={data => console.log(data)}>
+          onSubmit={async data => {
+            // @ts-ignore
+            const response = await createWork(data);
+            toast.show({
+              placement: 'top',
+              render: ({id}: {id: any}) => {
+                const toastId = 'toast-' + id;
+                return (
+                  <Toast
+                    nativeID={toastId}
+                    action={response ? 'success' : 'error'}
+                    variant="solid">
+                    <VStack space="xs">
+                      <ToastTitle>
+                        {response ? 'Work Created' : 'Failed to create work'}
+                      </ToastTitle>
+                      <ToastDescription>
+                        {response
+                          ? 'Work has been created successfully'
+                          : 'Failed to create work'}
+                      </ToastDescription>
+                    </VStack>
+                  </Toast>
+                );
+              },
+            });
+          }}>
           {({
             handleChange,
-            handleBlur,
+            setFieldValue,
             handleSubmit,
             values,
             errors,
@@ -92,12 +153,6 @@ export default function CreateWorkScreen() {
                 </Text>
               )}
 
-              {touched.document_id && errors.document_id && (
-                <Text fontSize={'$sm'} color="$rose500">
-                  {errors.handler_id ?? 'bo'}
-                </Text>
-              )}
-
               <Button onPressIn={() => setOpen(true)}>
                 <ButtonText>
                   Date: {moment(date).format('DD-MM-YYYY hh:mm a')}
@@ -110,12 +165,87 @@ export default function CreateWorkScreen() {
                 date={date}
                 onConfirm={date => {
                   setOpen(false);
-                  setDate(date);
+                  setDate(moment(date).toDate());
                 }}
                 onCancel={() => {
                   setOpen(false);
                 }}
               />
+
+              <Select
+                onValueChange={text => {
+                  setFieldValue('keywords', text);
+                  setSelectedDepartment(text);
+                }}>
+                <SelectTrigger variant="outline" size="md">
+                  <SelectInput placeholder="Select Department" />
+                  {/* @ts-ignore */}
+                  <SelectIcon mr="$3">
+                    <Icon as={ChevronDownIcon} />
+                  </SelectIcon>
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop />
+                  <SelectContent>
+                    <SelectDragIndicatorWrapper>
+                      <SelectDragIndicator />
+                    </SelectDragIndicatorWrapper>
+
+                    {departments?.map(
+                      (department: DepartmentType, index: number) => (
+                        <SelectItem
+                          key={index}
+                          label={department.name}
+                          value={`${department.id!}`}
+                        />
+                      ),
+                    )}
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
+
+              <Select
+                onValueChange={text => {
+                  handleChange('handler_id')(text.split('$$$-%%%')[0]);
+                  handleChange('handler_dept')(text.split('$$$-%%%')[1]);
+                }}>
+                <SelectTrigger variant="outline" size="md">
+                  <SelectInput placeholder="Select Handler" />
+                  {/* @ts-ignore */}
+                  <SelectIcon mr="$3">
+                    <Icon as={ChevronDownIcon} />
+                  </SelectIcon>
+                </SelectTrigger>
+                <SelectPortal>
+                  <SelectBackdrop />
+                  <SelectContent>
+                    <SelectDragIndicatorWrapper>
+                      <SelectDragIndicator />
+                    </SelectDragIndicatorWrapper>
+
+                    {users?.map(
+                      (
+                        {
+                          id,
+                          first_name,
+                          last_name,
+                          middle_name,
+                          department_id,
+                        }: UserType,
+                        index: number,
+                      ) => (
+                        <SelectItem
+                          key={index}
+                          label={
+                            first_name + ' ' + middle_name + ' ' + last_name
+                          }
+                          value={`${id! + '$$$-%%%' + department_id}`}
+                        />
+                      ),
+                    )}
+                  </SelectContent>
+                </SelectPortal>
+              </Select>
 
               <Select onValueChange={handleChange('sensitivity')}>
                 <SelectTrigger variant="outline" size="md">
@@ -196,7 +326,12 @@ export default function CreateWorkScreen() {
                   type="text"
                   defaultValue=""
                   placeholder="Keywords"
-                  onChangeText={handleChange('keywords')}
+                  // convert this in to a array of strings
+                  //before handleChange
+                  onChangeText={text => {
+                    const keywords = text.split(',');
+                    setFieldValue('keywords', keywords);
+                  }}
                 />
               </Input>
               {touched.keywords && errors.keywords && (
@@ -232,6 +367,7 @@ export default function CreateWorkScreen() {
 
               <Button
                 onPressIn={(event: GestureResponderEvent) =>
+                  // @ts-ignore
                   handleSubmit(event)
                 }>
                 <ButtonText>Create New Work</ButtonText>

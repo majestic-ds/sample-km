@@ -1,6 +1,6 @@
 import {ReactNode, createContext, useContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Storage} from '../types/enums';
+import {Storage} from '../enums';
 import axios from 'axios';
 import {API} from '../utils/api';
 import {

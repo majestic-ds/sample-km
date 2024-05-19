@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import CreateWorkScreen from '../../screens/create-work-screen';
 import {Dimensions} from 'react-native';
 import {View} from '@gluestack-ui/themed';
+import ChatScreen from '../../screens/chat-screent';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -48,6 +49,9 @@ const CreateWorkIcon = ({focused, size}: {focused: boolean; size: number}) => (
   <IconStyle focused={focused} iconName="folder-plus" size={size} />
 );
 
+const CreateChatIcon = ({focused, size}: {focused: boolean; size: number}) => (
+  <IconStyle focused={focused} iconName="comment" size={size} />
+);
 export default function TabbedNavigation() {
   const auth = useAuth();
 
@@ -81,6 +85,14 @@ export default function TabbedNavigation() {
           options={{
             tabBarShowLabel: false,
             tabBarIcon: CreateWorkIcon,
+          }}
+        />
+        <Tab.Screen
+          name="Chat"
+          component={ChatScreen}
+          options={{
+            tabBarShowLabel: false,
+            tabBarIcon: CreateChatIcon,
           }}
         />
         <Tab.Screen
