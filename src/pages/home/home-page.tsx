@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {useAuth} from '../context/AuthContext';
+import {useAuth} from '../../context/AuthContext';
 import {RefreshControl, View} from 'react-native';
 import {Button, ButtonText, ScrollView} from '@gluestack-ui/themed';
-import {WorkType} from '../types/work';
-import {getUserWork} from '../utils/data/work';
-import WorkMiniCard from '../components/ui/cards/work-mini-card';
+import {WorkType} from '../../types/work';
+import {getUserWork} from '../../utils/data/work';
+import WorkMiniCard from '../../components/ui/cards/work-mini-card';
 
-export default function HomeScreen() {
+export default function HomePage() {
   const auth = useAuth();
   const [works, setWorks] = useState<WorkType[]>([]);
 

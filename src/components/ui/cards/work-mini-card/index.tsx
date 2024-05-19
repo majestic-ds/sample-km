@@ -1,24 +1,8 @@
 import React from 'react';
 import {WorkType} from '../../../../types/work';
-import {Button, ButtonIcon, ButtonText, Card, Text} from '@gluestack-ui/themed';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Button, ButtonText, Card, Text} from '@gluestack-ui/themed';
 
 import moment from 'moment';
-
-// sensitivity: z.enum([
-//     'public',
-//     'internal use only',
-//     'confidential',
-//     'restricted',
-//     'top secret',
-//   ]),
-//   priority: z.enum([
-//     'low priority',
-//     'normal priority',
-//     'high priority',
-//     'urgent priority',
-//     'critical priority',
-//   ]),
 
 interface Props extends WorkType {
   indexNumber: number;

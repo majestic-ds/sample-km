@@ -1,7 +1,6 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import HomeScreen from '../../screens/home-screen';
 import LoginScreen from '../../screens/login-screen';
 import {useAuth} from '../../context/AuthContext';
 import SettingsScreen from '../../screens/settings-screen';
@@ -9,8 +8,8 @@ import SettingsScreen from '../../screens/settings-screen';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CreateWorkScreen from '../../screens/create-work-screen';
 import {Dimensions} from 'react-native';
-import {View} from '@gluestack-ui/themed';
 import ChatScreen from '../../screens/chat-screent';
+import HomeStack from '../stack/HomeStack';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -73,7 +72,7 @@ export default function TabbedNavigation() {
         }}>
         <Tab.Screen
           name="Home"
-          component={HomeScreen}
+          component={HomeStack}
           options={{
             tabBarShowLabel: false,
             tabBarIcon: WorksIcon,
