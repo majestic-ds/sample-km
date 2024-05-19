@@ -1,19 +1,41 @@
-import {View, Text} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAuth} from '../context/AuthContext';
-import {Button, ButtonText} from '@gluestack-ui/themed';
+import {RefreshControl, View} from 'react-native';
+import {Button, ButtonText, ScrollView} from '@gluestack-ui/themed';
+import {WorkType} from '../types/work';
+import {getUserWork} from '../utils/data/work';
+import WorkMiniCard from '../components/ui/cards/work-mini-card';
 
 export default function HomeScreen() {
   const auth = useAuth();
+  const [works, setWorks] = useState<WorkType[]>([]);
 
-  console.log('authState', auth.authState);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [reload, setReload] = useState(0);
+
+  useEffect(() => {
+    if (auth?.authState?.user?.id) {
+      getUserWork(auth.authState.user.id).then(data => setWorks(data));
+      setRefreshing(false);
+    }
+    return () => {};
+  }, [auth?.authState?.user, reload]);
 
   return (
-    <View>
-      <Text>HomeScreen </Text>
-      <Button onPress={() => auth?.onLogout && auth?.onLogout()}>
-        <ButtonText>Logout</ButtonText>
-      </Button>
-    </View>
+    <ScrollView
+      flex={1}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => {
+            setRefreshing(true);
+            setReload(reload + 1);
+          }}
+        />
+      }>
+      {works.map((work, index) => (
+        <WorkMiniCard key={index} {...work} indexNumber={index} />
+      ))}
+    </ScrollView>
   );
 }

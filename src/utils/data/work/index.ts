@@ -13,3 +13,13 @@ export async function createWork(data: WorkType): Promise<boolean> {
     return false;
   }
 }
+
+export async function getUserWork(id: number): Promise<WorkType[]> {
+  try {
+    const work = await axios.get(API('/work?hander_id=' + id));
+
+    return work.data.data;
+  } catch (error: unknown) {
+    return [];
+  }
+}

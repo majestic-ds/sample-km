@@ -25,14 +25,8 @@ export async function resetPassword(
 ): Promise<boolean> {
   try {
     const request = await axios.post(API('/user/reset-password'), data);
-
-    console.log('run here2');
-    console.log(request.data);
-
     return !!request.data.status;
   } catch (error: unknown) {
-    console.log(error);
-
     return false;
   }
 }
