@@ -3,6 +3,7 @@ import {WorkType} from '../../../../types/work';
 import {Button, ButtonText, Card, Text} from '@gluestack-ui/themed';
 
 import moment from 'moment';
+import {useNavigation} from '@react-navigation/native';
 
 interface Props extends WorkType {
   indexNumber: number;
@@ -15,7 +16,9 @@ export default function WorkMiniCard({
   priority,
   sensitivity,
   indexNumber,
+  id,
 }: Props) {
+  const nav = useNavigation();
   return (
     <Card
       style={{
@@ -69,11 +72,12 @@ export default function WorkMiniCard({
         {sensitivity}
       </Text>
 
-      {acknowledged === 'no' && (
-        <Button marginTop={'$5'}>
-          <ButtonText>View Work </ButtonText>
-        </Button>
-      )}
+      <Button
+        marginTop={'$5'}
+        // @ts-ignore
+        onPress={() => nav.navigate('WorkDetailPage', {workId: id})}>
+        <ButtonText>View Work </ButtonText>
+      </Button>
     </Card>
   );
 }

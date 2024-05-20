@@ -42,8 +42,6 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
       const user = await AsyncStorage.getItem(Storage.USER);
 
       if (token) {
-        console.log('tokeen ', token);
-
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
         setAuthState({
           token: token,
@@ -74,8 +72,6 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
 
       return result;
     } catch (error) {
-      console.log(error);
-
       toast.show({
         placement: 'top',
         render: ({id}) => {

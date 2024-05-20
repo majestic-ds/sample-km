@@ -26,7 +26,6 @@ const FilePicker = ({onFileSelect}: Props) => {
       uploadFile(result[0]);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
-        console.log('User cancelled the picker');
       } else {
         console.error(err);
       }
@@ -54,8 +53,6 @@ const FilePicker = ({onFileSelect}: Props) => {
           'Content-Type': 'multipart/form-data',
         },
       });
-
-      console.log(response.data.data.filename);
 
       onFileSelect && onFileSelect(response.data.data.filename);
       setLoading(false);

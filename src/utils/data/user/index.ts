@@ -6,8 +6,6 @@ export async function getUser(query?: string): Promise<UserType[]> {
   try {
     const department = await axios.get(API(`/user${query ? `${query}` : ''}`));
 
-    console.log(department.data.data);
-
     return department.data.data;
   } catch (error: unknown) {
     return [];
