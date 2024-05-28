@@ -6,8 +6,9 @@ import {Button, ButtonText, Text, set} from '@gluestack-ui/themed';
 import {Spinner} from '@gluestack-ui/themed';
 interface Props {
   onFileSelect?: (fileName: string) => any;
+  buttonText?: string;
 }
-const FilePicker = ({onFileSelect}: Props) => {
+const FilePicker = ({onFileSelect, buttonText}: Props) => {
   const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
 
@@ -68,7 +69,7 @@ const FilePicker = ({onFileSelect}: Props) => {
   return (
     <>
       <Button onPress={selectFile}>
-        <ButtonText>Selected Primary Document</ButtonText>
+        <ButtonText>{buttonText ?? 'Selected Primary Document'}</ButtonText>
       </Button>
       {loading && <Spinner size="small" />}
       {/*@ts-ignore */}

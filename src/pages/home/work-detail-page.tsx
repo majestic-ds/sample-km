@@ -27,6 +27,10 @@ import {API} from '../../utils/api';
 import {ScrollView} from '@gluestack-ui/themed';
 import {useNavigation} from '@react-navigation/native';
 import AddStatus from '../../components/add-status';
+import {useAuth} from '../../context/AuthContext';
+import {getWorkStatus} from '../../utils/data/status';
+import {StatusType} from '../../types/status';
+import StatusCard from '../../components/ui/cards/status-card';
 
 interface Props {
   route: {
@@ -37,10 +41,12 @@ interface Props {
 }
 
 export default function WorkDetailPage({route}: any) {
-  const ref = React.useRef(null);
+  const auth = useAuth();
+
   const [loading, setLoading] = useState<boolean>(false);
   const [work, setWork] = useState<WorkType | null>(null);
   const [reload, setReload] = useState(0);
+  const [status, setStatus] = useState<StatusType[]>([]);
   const [addStatus, setAddStatus] = useState(false);
 
   const nav = useNavigation();
@@ -51,6 +57,8 @@ export default function WorkDetailPage({route}: any) {
       getUserWorkByWorkId(workId)
         .then(data => setWork(data))
         .finally(() => setLoading(false));
+
+      getWorkStatus(workId).then(data => setStatus(() => data));
     }
 
     return () => {};
@@ -66,9 +74,9 @@ export default function WorkDetailPage({route}: any) {
 
   return (
     // @ts-ignore
-    <View flex={1}>
+    <View flex={1} style={{backgroundColor: '#42acff'}}>
       <ScrollView>
-        <Card>
+        <Card margin={'$2'}>
           <Text
             textAlign="center"
             fontSize={'$3xl'}
@@ -147,9 +155,22 @@ export default function WorkDetailPage({route}: any) {
             ]}
           />
         </Card>
+
+        {status?.reverse().map((item, index) => (
+          <StatusCard {...item} key={index} />
+        ))}
       </ScrollView>
 
-      {addStatus && <AddStatus onClose={() => setAddStatus(() => false)} />}
+      {addStatus && auth?.authState?.user?.id && (
+        <AddStatus
+          handler_id={`${auth?.authState?.user?.id}`}
+          workId={workId}
+          onClose={() => {
+            setAddStatus(() => false);
+            setReload(val => val + 1);
+          }}
+        />
+      )}
 
       <FloatinActionButton onPress={() => setAddStatus(() => true)} />
     </View>

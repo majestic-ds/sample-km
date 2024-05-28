@@ -7,11 +7,10 @@ import SettingsScreen from '../../screens/settings-screen';
 
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CreateWorkScreen from '../../screens/create-work-screen';
-import {Dimensions} from 'react-native';
 import ChatScreen from '../../screens/chat-screent';
 import HomeStack from '../stack/HomeStack';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
+import {View, Image, Text} from 'react-native';
+import {HStack, Box, Heading} from '@gluestack-ui/themed';
 
 const Tab = createBottomTabNavigator();
 
@@ -76,6 +75,28 @@ export default function TabbedNavigation() {
           options={{
             tabBarShowLabel: false,
             tabBarIcon: WorksIcon,
+            header: () => (
+              <HStack
+                style={{
+                  backgroundColor: '#fff',
+                  paddingBottom: '2.5%',
+                  paddingTop: '2.5%',
+                }}>
+                <Box w="$40">
+                  <Image
+                    source={require('../../../assets/images/logo.png')} // Make sure you have your logo image in the correct path
+                    style={{width: 70, height: 70}}
+                  />
+                </Box>
+                <Box
+                  w="$56"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="right">
+                  <Heading size="3xl">بلدية الكويت</Heading>
+                </Box>
+              </HStack>
+            ),
           }}
         />
         <Tab.Screen
